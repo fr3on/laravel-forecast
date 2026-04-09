@@ -2,8 +2,8 @@
 
 namespace Fr3on\Forecast;
 
-use Illuminate\Support\ServiceProvider;
 use Fr3on\Forecast\Commands\ForecastCommand;
+use Illuminate\Support\ServiceProvider;
 
 class ForecastServiceProvider extends ServiceProvider
 {

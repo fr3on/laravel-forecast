@@ -2,10 +2,10 @@
 
 namespace Fr3on\Forecast\Commands;
 
-use Illuminate\Console\Command;
 use Fr3on\Forecast\ImpactCalculator;
 use Fr3on\Forecast\MigrationRunner;
 use Fr3on\Forecast\SqlAnalyzer;
+use Illuminate\Console\Command;
 
 class ForecastCommand extends Command
 {
