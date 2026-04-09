@@ -12,7 +12,7 @@ class MigrationRunner
     private array $resolved = [];
 
     public function __construct(
-        protected Migrator   $migrator,
+        protected Migrator $migrator,
         protected Filesystem $files,
     ) {}
 
@@ -80,7 +80,7 @@ class MigrationRunner
             return $this->resolved[$migrationName];
         }
 
-        $realPath     = realpath($migrationPath) ?: $migrationPath;
+        $realPath = realpath($migrationPath) ?: $migrationPath;
         $alreadyLoaded = in_array($realPath, get_included_files(), true);
 
         if (! $alreadyLoaded) {
@@ -129,4 +129,3 @@ class MigrationRunner
         return array_values(array_unique(array_merge($paths, $extra)));
     }
 }
-

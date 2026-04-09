@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'large_table_threshold'  => env('FORECAST_LARGE_TABLE_THRESHOLD', 1_000_000),
+    'large_table_threshold' => env('FORECAST_LARGE_TABLE_THRESHOLD', 1_000_000),
     'medium_table_threshold' => env('FORECAST_MEDIUM_TABLE_THRESHOLD', 100_000),
 
     /*
@@ -27,10 +27,10 @@ return [
     */
 
     'ms_per_thousand_rows' => [
-        'drop_column'  => 10,   // ~10 ms per 1,000 rows
+        'drop_column' => 10,   // ~10 ms per 1,000 rows
         'create_index' => 10,   // ~10 ms per 1,000 rows
         'alter_column' => 15,   // ~15 ms per 1,000 rows
-        'add_column'   => 5,    // ~5  ms per 1,000 rows (older engines without INSTANT DDL)
+        'add_column' => 5,    // ~5  ms per 1,000 rows (older engines without INSTANT DDL)
     ],
 
     /*
@@ -46,4 +46,3 @@ return [
     'migration_paths' => [],
 
 ];
-

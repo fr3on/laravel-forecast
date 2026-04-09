@@ -11,6 +11,9 @@ jobs:
     runs-on: ubuntu-latest
     name: Laravel Pint
 
+    permissions:
+      contents: write
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -24,6 +27,11 @@ jobs:
       - name: Install dependencies
         run: composer install --prefer-dist --no-interaction
 
-      - name: Run Pint (dry run)
-        run: ./vendor/bin/pint --test
+      - name: Run Pint
+        run: ./vendor/bin/pint
+
+      - name: Commit changes
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "style: fix code style with Laravel Pint"
 

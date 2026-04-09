@@ -3,7 +3,7 @@
 use LaravelForecast\ImpactCalculator;
 
 beforeEach(function () {
-    $this->calc = new ImpactCalculator();
+    $this->calc = new ImpactCalculator;
 });
 
 it('returns instant for DROP TABLE', function () {
@@ -44,4 +44,3 @@ it('returns minutes estimate for large ALTER COLUMN', function () {
     // 10,000,000 rows × 15ms/1000 = 150,000ms = 2.5m → ~3m
     expect($this->calc->estimateLockTime('ALTER COLUMN', 10_000_000))->toBe('~3m (estimated)');
 });
-

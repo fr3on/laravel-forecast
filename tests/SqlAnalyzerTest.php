@@ -3,7 +3,7 @@
 use LaravelForecast\SqlAnalyzer;
 
 beforeEach(function () {
-    $this->analyzer = new SqlAnalyzer();
+    $this->analyzer = new SqlAnalyzer;
 });
 
 // ─── CREATE TABLE ─────────────────────────────────────────────────────────────
@@ -150,4 +150,3 @@ it('extracts table names without any delimiter', function () {
 
     expect($result['table'])->toBe('legacy_payments');
 });
-

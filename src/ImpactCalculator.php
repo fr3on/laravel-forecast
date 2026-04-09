@@ -8,10 +8,10 @@ class ImpactCalculator
 {
     /** Fallback heuristics (ms per 1,000 rows) used when the Laravel config is unavailable. */
     private const DEFAULTS = [
-        'drop_column'  => 10,
+        'drop_column' => 10,
         'create_index' => 10,
         'alter_column' => 15,
-        'add_column'   => 5,
+        'add_column' => 5,
     ];
 
     // ─── Row counts ───────────────────────────────────────────────────────────
@@ -47,23 +47,18 @@ class ImpactCalculator
 
         return match (true) {
             // Metadata-only — essentially instant regardless of table size
-            in_array($operation, ['DROP TABLE', 'CREATE TABLE', 'RENAME TABLE', 'RENAME COLUMN'], true)
-                => 'instant',
+            in_array($operation, ['DROP TABLE', 'CREATE TABLE', 'RENAME TABLE', 'RENAME COLUMN'], true) => 'instant',
 
             // MySQL 8+ INSTANT DDL; minimal lock even on huge tables
-            $operation === 'ADD COLUMN'
-                => $rowCount === 0
+            $operation === 'ADD COLUMN' => $rowCount === 0
                     ? 'instant'
                     : '< 1s (online)',
 
-            $operation === 'DROP COLUMN'
-                => $this->timeFromRows($rowCount, $this->ms('drop_column')),
+            $operation === 'DROP COLUMN' => $this->timeFromRows($rowCount, $this->ms('drop_column')),
 
-            $operation === 'CREATE INDEX'
-                => $this->timeFromRows($rowCount, $this->ms('create_index')),
+            $operation === 'CREATE INDEX' => $this->timeFromRows($rowCount, $this->ms('create_index')),
 
-            in_array($operation, ['ALTER COLUMN', 'ADD NOT NULL', 'ALTER TABLE'], true)
-                => $this->timeFromRows($rowCount, $this->ms('alter_column')),
+            in_array($operation, ['ALTER COLUMN', 'ADD NOT NULL', 'ALTER TABLE'], true) => $this->timeFromRows($rowCount, $this->ms('alter_column')),
 
             default => '—',
         };
@@ -99,4 +94,3 @@ class ImpactCalculator
         }
     }
 }
-

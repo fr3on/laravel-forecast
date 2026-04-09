@@ -15,8 +15,8 @@ class ForecastCommand extends Command
     protected $description = 'Preview pending migration impact — row counts, lock estimates, and risk ratings — before you migrate';
 
     public function handle(
-        MigrationRunner  $runner,
-        SqlAnalyzer      $analyzer,
+        MigrationRunner $runner,
+        SqlAnalyzer $analyzer,
         ImpactCalculator $calculator,
     ): int {
         $pending = $runner->getPendingMigrations();
@@ -36,7 +36,7 @@ class ForecastCommand extends Command
         );
         $this->newLine();
 
-        $totals    = ['SAFE' => 0, 'CAUTION' => 0, 'DANGER' => 0];
+        $totals = ['SAFE' => 0, 'CAUTION' => 0, 'DANGER' => 0];
         $hasDanger = false;
 
         foreach ($pending as $migrationName => $migrationPath) {
@@ -47,10 +47,11 @@ class ForecastCommand extends Command
             if (empty($queries)) {
                 $this->line('  <fg=gray>  (no SQL captured — skipping)</>');
                 $this->newLine();
+
                 continue;
             }
 
-            $rows    = [];
+            $rows = [];
             $notices = [];
 
             foreach ($queries as $queryData) {
@@ -117,10 +118,10 @@ class ForecastCommand extends Command
 
             foreach ($notices as $notice) {
                 match ($notice['type']) {
-                    'danger'  => $this->line("  <fg=red>⚠  {$notice['text']}</>"),
+                    'danger' => $this->line("  <fg=red>⚠  {$notice['text']}</>"),
                     'caution' => $this->line("  <fg=yellow>ℹ  {$notice['text']}</>"),
-                    'hint'    => $this->line("  <fg=gray>   {$notice['text']}</>"),
-                    default   => null,
+                    'hint' => $this->line("  <fg=gray>   {$notice['text']}</>"),
+                    default => null,
                 };
             }
 
@@ -128,9 +129,9 @@ class ForecastCommand extends Command
         }
 
         // ─── Summary ──────────────────────────────────────────────────────────
-        $safe    = $totals['SAFE']    ?? 0;
+        $safe = $totals['SAFE'] ?? 0;
         $caution = $totals['CAUTION'] ?? 0;
-        $danger  = $totals['DANGER']  ?? 0;
+        $danger = $totals['DANGER'] ?? 0;
 
         $this->line(
             "  <fg=green>SAFE: {$safe}</>   <fg=yellow>CAUTION: {$caution}</>   <fg=red>DANGER: {$danger}</>",
@@ -157,10 +158,10 @@ class ForecastCommand extends Command
     private function colorizeRisk(string $risk): string
     {
         return match ($risk) {
-            'SAFE'    => '<fg=green>SAFE</>',
+            'SAFE' => '<fg=green>SAFE</>',
             'CAUTION' => '<fg=yellow>CAUTION</>',
-            'DANGER'  => '<fg=red;options=bold>DANGER</>',
-            default   => $risk,
+            'DANGER' => '<fg=red;options=bold>DANGER</>',
+            default => $risk,
         };
     }
 
@@ -188,4 +189,3 @@ class ForecastCommand extends Command
             : $text;
     }
 }
-

@@ -18,16 +18,16 @@ class SqlAnalyzer
         $sql = trim($sql);
 
         return
-            $this->matchDropTable($sql)    ??
-            $this->matchCreateTable($sql)  ??
-            $this->matchDropColumn($sql)   ??
-            $this->matchAddColumn($sql)    ??
-            $this->matchCreateIndex($sql)  ??
-            $this->matchRenameTable($sql)  ??
+            $this->matchDropTable($sql) ??
+            $this->matchCreateTable($sql) ??
+            $this->matchDropColumn($sql) ??
+            $this->matchAddColumn($sql) ??
+            $this->matchCreateIndex($sql) ??
+            $this->matchRenameTable($sql) ??
             $this->matchRenameColumn($sql) ??
-            $this->matchNotNull($sql)      ??
-            $this->matchAlterColumn($sql)  ??
-            $this->matchAlterTable($sql)   ??
+            $this->matchNotNull($sql) ??
+            $this->matchAlterColumn($sql) ??
+            $this->matchAlterTable($sql) ??
             $this->fallback($sql);
     }
 
@@ -41,10 +41,10 @@ class SqlAnalyzer
 
         return $this->result(
             operation: 'DROP TABLE',
-            table:     $this->extractTable('/DROP\s+TABLE\s+(?:IF\s+EXISTS\s+)?(?:\S+\.)?[`"\[]?(\w+)/i', $sql),
-            risk:      'DANGER',
-            reason:    'Entire table and all its data will be permanently deleted.',
-            advice:    null,
+            table: $this->extractTable('/DROP\s+TABLE\s+(?:IF\s+EXISTS\s+)?(?:\S+\.)?[`"\[]?(\w+)/i', $sql),
+            risk: 'DANGER',
+            reason: 'Entire table and all its data will be permanently deleted.',
+            advice: null,
         );
     }
 
@@ -56,10 +56,10 @@ class SqlAnalyzer
 
         return $this->result(
             operation: 'CREATE TABLE',
-            table:     $this->extractTable('/CREATE\s+TABLE\s+(?:IF\s+NOT\s+EXISTS\s+)?(?:\S+\.)?[`"\[]?(\w+)/i', $sql),
-            risk:      'SAFE',
-            reason:    'New table — no existing data affected.',
-            advice:    null,
+            table: $this->extractTable('/CREATE\s+TABLE\s+(?:IF\s+NOT\s+EXISTS\s+)?(?:\S+\.)?[`"\[]?(\w+)/i', $sql),
+            risk: 'SAFE',
+            reason: 'New table — no existing data affected.',
+            advice: null,
         );
     }
 
@@ -71,10 +71,10 @@ class SqlAnalyzer
 
         return $this->result(
             operation: 'DROP COLUMN',
-            table:     $this->extractTable('/ALTER\s+TABLE\s+(?:\S+\.)?[`"\[]?(\w+)/i', $sql),
-            risk:      'DANGER',
-            reason:    'Column and all its data will be permanently removed.',
-            advice:    null,
+            table: $this->extractTable('/ALTER\s+TABLE\s+(?:\S+\.)?[`"\[]?(\w+)/i', $sql),
+            risk: 'DANGER',
+            reason: 'Column and all its data will be permanently removed.',
+            advice: null,
         );
     }
 
@@ -85,26 +85,26 @@ class SqlAnalyzer
             return null;
         }
 
-        $table      = $this->extractTable('/ALTER\s+TABLE\s+(?:\S+\.)?[`"\[]?(\w+)/i', $sql);
+        $table = $this->extractTable('/ALTER\s+TABLE\s+(?:\S+\.)?[`"\[]?(\w+)/i', $sql);
         $hasDefault = (bool) preg_match('/\bDEFAULT\b/i', $sql);
-        $nullable   = preg_match('/\bNULL\b/i', $sql) && ! preg_match('/\bNOT\s+NULL\b/i', $sql);
+        $nullable = preg_match('/\bNULL\b/i', $sql) && ! preg_match('/\bNOT\s+NULL\b/i', $sql);
 
         if (! $hasDefault && ! $nullable) {
             return $this->result(
                 operation: 'ADD COLUMN',
-                table:     $table,
-                risk:      'DANGER',
-                reason:    'NOT NULL column with no DEFAULT — will fail on non-empty tables.',
-                advice:    'Add a DEFAULT value or make the column nullable.',
+                table: $table,
+                risk: 'DANGER',
+                reason: 'NOT NULL column with no DEFAULT — will fail on non-empty tables.',
+                advice: 'Add a DEFAULT value or make the column nullable.',
             );
         }
 
         return $this->result(
             operation: 'ADD COLUMN',
-            table:     $table,
-            risk:      'SAFE',
-            reason:    'Column is nullable or has a DEFAULT — supports online DDL on MySQL 8+.',
-            advice:    null,
+            table: $table,
+            risk: 'SAFE',
+            reason: 'Column is nullable or has a DEFAULT — supports online DDL on MySQL 8+.',
+            advice: null,
         );
     }
 
@@ -116,10 +116,10 @@ class SqlAnalyzer
 
         return $this->result(
             operation: 'CREATE INDEX',
-            table:     $this->extractTable('/\bON\s+(?:\S+\.)?[`"\[]?(\w+)/i', $sql),
-            risk:      'CAUTION',
-            reason:    'May lock the table during index creation on older engines.',
-            advice:    'Consider ALGORITHM=INPLACE, LOCK=NONE for zero-downtime.',
+            table: $this->extractTable('/\bON\s+(?:\S+\.)?[`"\[]?(\w+)/i', $sql),
+            risk: 'CAUTION',
+            reason: 'May lock the table during index creation on older engines.',
+            advice: 'Consider ALGORITHM=INPLACE, LOCK=NONE for zero-downtime.',
         );
     }
 
@@ -137,10 +137,10 @@ class SqlAnalyzer
 
         return $this->result(
             operation: 'RENAME TABLE',
-            table:     $table ?? '',
-            risk:      'CAUTION',
-            reason:    'May break existing queries, views, and foreign-key references.',
-            advice:    null,
+            table: $table ?? '',
+            risk: 'CAUTION',
+            reason: 'May break existing queries, views, and foreign-key references.',
+            advice: null,
         );
     }
 
@@ -152,10 +152,10 @@ class SqlAnalyzer
 
         return $this->result(
             operation: 'RENAME COLUMN',
-            table:     $this->extractTable('/ALTER\s+TABLE\s+(?:\S+\.)?[`"\[]?(\w+)/i', $sql),
-            risk:      'CAUTION',
-            reason:    'May break existing queries and application code.',
-            advice:    null,
+            table: $this->extractTable('/ALTER\s+TABLE\s+(?:\S+\.)?[`"\[]?(\w+)/i', $sql),
+            risk: 'CAUTION',
+            reason: 'May break existing queries and application code.',
+            advice: null,
         );
     }
 
@@ -170,10 +170,10 @@ class SqlAnalyzer
 
         return $this->result(
             operation: 'ADD NOT NULL',
-            table:     $this->extractTable('/ALTER\s+TABLE\s+(?:\S+\.)?[`"\[]?(\w+)/i', $sql),
-            risk:      'DANGER',
-            reason:    'Will fail if any existing row contains NULL in this column.',
-            advice:    'Backfill NULL values before applying the constraint.',
+            table: $this->extractTable('/ALTER\s+TABLE\s+(?:\S+\.)?[`"\[]?(\w+)/i', $sql),
+            risk: 'DANGER',
+            reason: 'Will fail if any existing row contains NULL in this column.',
+            advice: 'Backfill NULL values before applying the constraint.',
         );
     }
 
@@ -186,10 +186,10 @@ class SqlAnalyzer
 
         return $this->result(
             operation: 'ALTER COLUMN',
-            table:     $this->extractTable('/ALTER\s+TABLE\s+(?:\S+\.)?[`"\[]?(\w+)/i', $sql),
-            risk:      'CAUTION',
-            reason:    'Type or constraint change — risk of data truncation.',
-            advice:    null,
+            table: $this->extractTable('/ALTER\s+TABLE\s+(?:\S+\.)?[`"\[]?(\w+)/i', $sql),
+            risk: 'CAUTION',
+            reason: 'Type or constraint change — risk of data truncation.',
+            advice: null,
         );
     }
 
@@ -201,10 +201,10 @@ class SqlAnalyzer
 
         return $this->result(
             operation: 'ALTER TABLE',
-            table:     $this->extractTable('/ALTER\s+TABLE\s+(?:\S+\.)?[`"\[]?(\w+)/i', $sql),
-            risk:      'CAUTION',
-            reason:    'Table structure modification.',
-            advice:    null,
+            table: $this->extractTable('/ALTER\s+TABLE\s+(?:\S+\.)?[`"\[]?(\w+)/i', $sql),
+            risk: 'CAUTION',
+            reason: 'Table structure modification.',
+            advice: null,
         );
     }
 
@@ -217,10 +217,10 @@ class SqlAnalyzer
 
         return $this->result(
             operation: 'UNKNOWN',
-            table:     $table,
-            risk:      'CAUTION',
-            reason:    'Unrecognised SQL statement — review manually.',
-            advice:    null,
+            table: $table,
+            risk: 'CAUTION',
+            reason: 'Unrecognised SQL statement — review manually.',
+            advice: null,
         );
     }
 
@@ -235,19 +235,18 @@ class SqlAnalyzer
      * @return array{operation: string, table: string, risk: string, reason: string, advice: string|null}
      */
     private function result(
-        string  $operation,
+        string $operation,
         ?string $table,
-        string  $risk,
-        string  $reason,
+        string $risk,
+        string $reason,
         ?string $advice,
     ): array {
         return [
             'operation' => $operation,
-            'table'     => $table ?? '',
-            'risk'      => $risk,
-            'reason'    => $reason,
-            'advice'    => $advice,
+            'table' => $table ?? '',
+            'risk' => $risk,
+            'reason' => $reason,
+            'advice' => $advice,
         ];
     }
 }
-
