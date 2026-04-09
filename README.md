@@ -1,5 +1,11 @@
 # Laravel Forecast
 
+[![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/fr3on/laravel-forecast/tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/fr3on/laravel-forecast/actions/workflows/tests.yml)
+[![GitHub Code Style Action Status](https://img.shields.io/github/actions/workflow/status/fr3on/laravel-forecast/pint.yml?branch=main&label=code%20style&style=flat-square)](https://github.com/fr3on/laravel-forecast/actions/workflows/pint.yml)
+[![PHP Version](https://img.shields.io/badge/php-^8.2-777bb4.svg?style=flat-square&logo=php)](https://packagist.org/packages/fr3on/laravel-forecast)
+[![Laravel Version](https://img.shields.io/badge/laravel-^10.0%20%7C%20^11.0%20%7C%20^12.0-ff2d20.svg?style=flat-square&logo=laravel)](https://packagist.org/packages/fr3on/laravel-forecast)
+[![License](https://img.shields.io/badge/license-MIT-428f7e.svg?style=flat-square)](https://github.com/fr3on/laravel-forecast/blob/main/LICENSE)
+
 > `php artisan migrate:forecast` — see exactly what your pending migrations will do, how many rows are at risk, and how long the table lock might last, **before** you type `migrate`.
 
 ---
