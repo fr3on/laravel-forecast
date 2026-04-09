@@ -1,6 +1,6 @@
 <?php
 
-namespace LaravelForecast;
+namespace Fr3on\Forecast;
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Migrations\Migrator;

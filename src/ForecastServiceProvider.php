@@ -1,9 +1,9 @@
 <?php
 
-namespace LaravelForecast;
+namespace Fr3on\Forecast;
 
 use Illuminate\Support\ServiceProvider;
-use LaravelForecast\Commands\ForecastCommand;
+use Fr3on\Forecast\Commands\ForecastCommand;
 
 class ForecastServiceProvider extends ServiceProvider
 {

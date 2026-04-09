@@ -1,11 +1,11 @@
 <?php
 
-namespace LaravelForecast\Commands;
+namespace Fr3on\Forecast\Commands;
 
 use Illuminate\Console\Command;
-use LaravelForecast\ImpactCalculator;
-use LaravelForecast\MigrationRunner;
-use LaravelForecast\SqlAnalyzer;
+use Fr3on\Forecast\ImpactCalculator;
+use Fr3on\Forecast\MigrationRunner;
+use Fr3on\Forecast\SqlAnalyzer;
 
 class ForecastCommand extends Command
 {

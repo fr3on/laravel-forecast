@@ -1,6 +1,6 @@
 <?php
 
-use LaravelForecast\SqlAnalyzer;
+use Fr3on\Forecast\SqlAnalyzer;
 
 beforeEach(function () {
     $this->analyzer = new SqlAnalyzer;

@@ -1,6 +1,6 @@
 <?php
 
-use LaravelForecast\ImpactCalculator;
+use Fr3on\Forecast\ImpactCalculator;
 
 beforeEach(function () {
     $this->calc = new ImpactCalculator;
