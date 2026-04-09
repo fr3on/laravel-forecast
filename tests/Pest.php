@@ -1,0 +1,4 @@
+<?php
+
+uses()->in('tests');
+
