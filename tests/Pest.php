@@ -1,3 +1,5 @@
 <?php
 
-uses(Fr3on\Forecast\Tests\TestCase::class)->in('Feature');
+use Fr3on\Forecast\Tests\TestCase;
+
+uses(TestCase::class)->in('Feature');
