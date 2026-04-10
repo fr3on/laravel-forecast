@@ -1,7 +1,6 @@
 <?php
 
 use Fr3on\Forecast\MigrationRunner;
-use Illuminate\Support\Facades\Artisan;
 
 it('runs the forecast command comfortably', function () {
     $this->mock(MigrationRunner::class, function ($mock) {
